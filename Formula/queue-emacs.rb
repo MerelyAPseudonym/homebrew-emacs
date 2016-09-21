@@ -18,7 +18,12 @@ class QueueEmacs < EmacsFormula
   def install
     mv "queue-#{version}.el", "queue.el"
     byte_compile "queue.el"
+<<<<<<< Updated upstream
     elisp.install "queue.el", "queue.elc"
+=======
+    (share/"emacs/site-lisp/queue").install "queue.el", "queue.elc"
+    generate_autoloads "queue"
+>>>>>>> Stashed changes
   end
 
   test do

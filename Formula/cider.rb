@@ -19,10 +19,24 @@ class Cider < EmacsFormula
 
   def install
     byte_compile Dir["*.el"]
+<<<<<<< Updated upstream
     elisp.install Dir["*.el"], Dir["*.elc"]
+=======
+    (share/"emacs/site-lisp/cider").install Dir["*.el"], Dir["*.elc"]
+    generate_autoloads "cider"
+    doc.install "README.md"
+  end
+
+  def caveats; <<-EOS.undent
+    Add the following to your init file:
+
+    (require 'cider-autoloads)
+  EOS
+>>>>>>> Stashed changes
   end
 
   test do
+    do_minimal_test(
     (testpath/"test.el").write <<-EOS.undent
       (add-to-list 'load-path "#{elisp}")
       (add-to-list 'load-path "#{Formula["homebrew/emacs/clojure-mode"].opt_elisp}")

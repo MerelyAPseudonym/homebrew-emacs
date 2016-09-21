@@ -18,15 +18,35 @@ class ClojureMode < EmacsFormula
   end
 
   def install
+<<<<<<< Updated upstream
+=======
+    system "make", "test", "CASK=#{Formula["cask"].bin}/cask"
+    system "make", "compile", "CASK=#{Formula["cask"].bin}/cask"
+    (share/"emacs/site-lisp/clojure-mode").install Dir["*.el"],
+                                                   Dir["*.elc"]
+    generate_autoloads "clojure-mode"
+    doc.install "README.md"
+
+>>>>>>> Stashed changes
     if build.with? "inf"
       resource("inf").stage do
         byte_compile "inf-clojure.el"
         elisp.install "inf-clojure.el", "inf-clojure.elc"
       end
     end
+<<<<<<< Updated upstream
     system "make", "test"
     system "make", "compile"
     elisp.install Dir["*.el"], Dir["*.elc"]
+=======
+  end
+
+  def caveats; <<-EOS.undent
+    Add the following to your init file:
+
+    (require 'clojure-mode-autoloads)
+  EOS
+>>>>>>> Stashed changes
   end
 
   test do

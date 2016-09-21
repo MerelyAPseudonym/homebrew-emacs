@@ -15,6 +15,7 @@ class PkgInfo < EmacsFormula
     system "make", "compile", "CASK=#{Formula["cask"].bin}/cask"
     (share/"emacs/site-lisp/pkg-info").install Dir["*.el"],
                                                Dir["*.elc"]
+    generate_autoloads "pkg-info"
     doc.install "README.md"
   end
 

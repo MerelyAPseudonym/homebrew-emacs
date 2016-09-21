@@ -120,4 +120,34 @@ class EmacsFormula < Formula
       end
     end
   end
+<<<<<<< Updated upstream
+=======
+
+  def elisp_load_path_setup
+    recursive_dependencies.map(&:to_formula).select do |dep|
+      dep.is_a? EmacsFormula
+    end.map do |dep|
+      %Q{(add-to-list 'load-path "#{dep.share}/emacs/site-lisp/#{dep.name}")}
+    end
+  end
+
+  def do_minimal_test(pkg_name=@name, file_name=@name, further_code='')
+    (testpath/"test.el").write <<-EOS
+      #{elisp_load_path_setup.join "\n"}
+      (add-to-list 'load-path "#{share}/emacs/site-lisp/#{pkg_name}")
+      (load "#{file_name}")
+      #{further_code}
+      (print (minibuffer-prompt-width))
+    EOS
+    assert_equal "0", shell_output("emacs --quick --batch --load #{testpath}/test.el").strip
+  end
+
+  def generate_autoloads(pkg_name=@name)
+    system "emacs", "--batch", "--quick", "--eval", <<-EOS.undent
+      (let ((generated-autoload-file "#{share}/emacs/site-lisp/#{pkg_name}/#{pkg_name}-autoloads.el"))
+        (update-directory-autoloads "#{share}/emacs/site-lisp/#{pkg_name}"))
+    EOS
+    rm "#{share}/emacs/site-lisp/#{pkg_name}/#{pkg_name}-autoloads.el~"
+  end
+>>>>>>> Stashed changes
 end
